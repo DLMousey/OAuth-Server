@@ -1,0 +1,7 @@
+<?php
+
+return [
+    'iv' => '16-char-iv',
+    'key' => 'long-random-encryption-key-the-longer-the-better-( ͡° ͜ʖ ͡°)',
+    'method' => 'AES-256-CBC'
+];

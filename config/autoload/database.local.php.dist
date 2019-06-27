@@ -1,0 +1,20 @@
+<?php
+
+$dbParams = [
+    'database' => 'db_name',
+    'username' => 'db_username',
+    'port' => 5432,
+    'password' => 'db_password',
+    'hostname' => 'db_host'
+];
+
+$cliParams = [
+    'driver' => 'pdo_pgsql',
+    'dbname' => $dbParams['database'],
+    'user' => $dbParams['username'],
+    'port' => $dbParams['port'],
+    'password' => $dbParams['password'],
+    'host' => $dbParams['hostname']
+];
+
+return [];

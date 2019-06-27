@@ -1,0 +1,15 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="Core\Entity\RefreshToken" table="access_tokens" repository-class="Core\Mapper\RefreshTokenMapper">
+
+        <id name="id" type="string" column="id">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="token" column="token" type="string" />
+        <field name="dateCreated" column="created_at" type="datetime" />
+        <field name="expiryDate" column="expiry_date" type="datetime" />
+        <field name="lastUseDate" column="last_use_date" type="datetime" />
+
+        <many-to-one field="user" target-entity="Core\Entity\User" inversed-by="refreshTokens" />
+    </entity>
+</doctrine-mapping>

@@ -1,0 +1,18 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="Core\Entity\Application" table="applications" repository-class="Core\Mapper\ApplicationMapper">
+
+        <id name="id" type="string" column="id">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="name" column="name" type="string" />
+        <field name="description" column="description" type="text" />
+        <field name="avatarPath" column="avatar_path" type="string" nullable="true" />
+        <field name="clientId" column="client_id" type="string" />
+        <field name="clientSecret" column="client_secret" type="clientsecret" />
+        <field name="dateCreated" column="date_created" type="datetime" />
+        <field name="dateUpdated" column="date_updated" type="datetime" nullable="true" />
+
+        <many-to-many field="users" mapped-by="applications" target-entity="Core\Entity\User" />
+    </entity>
+</doctrine-mapping>

@@ -1,0 +1,29 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="Core\Entity\User" table="users" repository-class="Core\Mapper\UserMapper">
+
+        <id name="id" type="string" column="id">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="username" column="username" type="string" />
+        <field name="firstName" column="name_first" type="string" nullable="true" />
+        <field name="lastName" column="name_last" type="string" nullable="true" />
+        <field name="password" column="password" type="string" />
+        <field name="email" column="email" type="string" />
+        <field name="dateOfBirth" column="date_of_birth" type="datetime" nullable="true" />
+        <field name="avatarPath" column="avatar_path" type="string" nullable="true" />
+
+        <one-to-many field="verificationTokens" target-entity="Core\Entity\VerificationToken" mapped-by="user" />
+        <one-to-many field="refreshTokens" target-entity="Core\Entity\RefreshToken" mapped-by="user" />
+        <many-to-many field="applications" target-entity="Core\Entity\Application" inversed-by="users">
+            <join-table name="applications_users">
+                <join-columns>
+                    <join-column name="user_id" referenced-column-name="id" />
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="application_id" referenced-column-name="id" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+    </entity>
+</doctrine-mapping>
