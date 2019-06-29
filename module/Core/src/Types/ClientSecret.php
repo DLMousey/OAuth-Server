@@ -48,7 +48,7 @@ class ClientSecret extends Type
     {
         $parts = explode(':', $value);
 
-        $decryptedValue = openssl_decrypt($value,
+        $decryptedValue = openssl_decrypt($parts[0],
             $this->getConfig('cipher'),
             $this->getConfig('key'),
             0,
