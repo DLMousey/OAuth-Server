@@ -46,12 +46,13 @@ class ClientSecret extends Type
      */
     public function convertToPhpValue($value, AbstractPlatform $platform)
     {
-        $decryptedValue = openssl_decrypt(
-            base64_decode($value),
-            $this->getConfig('method'),
-            $this->getKey(),
+        $parts = explode(':', $value);
+
+        $decryptedValue = openssl_decrypt($value,
+            $this->getConfig('cipher'),
+            $this->getConfig('key'),
             0,
-            $this->getIv()
+            base64_decode($parts[1])
         );
 
         return $decryptedValue;
@@ -66,13 +67,15 @@ class ClientSecret extends Type
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        $encryptedValue = openssl_encrypt($value,
-            $this->getConfig('method'),
-            $this->getKey(),
-            0,
-            $this->getIv());
+        $iv = $this->getIv();
 
-        return base64_encode($encryptedValue);
+        $encryptedValue = openssl_encrypt($value,
+            $this->getConfig('cipher'),
+            $this->getConfig('key'),
+            0,
+            $iv);
+
+        return $encryptedValue . ':' . base64_encode($iv);
     }
 
     /**
@@ -87,17 +90,12 @@ class ClientSecret extends Type
     /**
      * @return string
      */
-    public function getKey() : string
-    {
-        return hash('sha256', $this->getConfig('key'));
-    }
-
-    /**
-     * @return string
-     */
     public function getIv() : string
     {
-        return substr(hash('sha256', $this->getConfig('iv')), 0, 16);
+        $length = openssl_cipher_iv_length($this->getConfig('cipher'));
+        $iv = openssl_random_pseudo_bytes($length);
+
+        return $iv;
     }
 
     /**
