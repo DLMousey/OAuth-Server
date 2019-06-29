@@ -11,6 +11,11 @@ class ApplicationService
 {
     protected $applicationMapper;
 
+    public function find($id)
+    {
+        return $this->getApplicationMapper()->find($id);
+    }
+
     public function create(array $data)
     {
         $hydrator = new ClassMethods();

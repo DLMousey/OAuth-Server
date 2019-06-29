@@ -24,6 +24,16 @@ return [
                     ],
                 ],
             ],
+            'application-detail' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/applications[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ApplicationController::class,
+                        'action' => 'applicationDetail'
+                    ]
+                ]
+            ],
             'create-application' => [
                 'type' => Literal::class,
                 'options' => [
