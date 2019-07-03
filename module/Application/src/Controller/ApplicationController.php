@@ -27,7 +27,9 @@ class ApplicationController extends AbstractActionController
         $form = new ApplicationForm();
 
         if($this->getRequest()->isPost()) {
-            $application = $this->getApplicationService()->create($this->params()->fromPost());
+            $application = $this->getApplicationService()->create(
+                $this->params()->fromPost(), $this->identity()
+            );
 
             $vm = new ViewModel(['application' => $application]);
             $vm->setTemplate('application/create-success');

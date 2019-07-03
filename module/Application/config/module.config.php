@@ -55,6 +55,16 @@ return [
                     ],
                 ]
             ],
+            'register' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/register',
+                    'defaults' => [
+                        'controller' => Controller\AuthenticationController::class,
+                        'action' => 'register'
+                    ]
+                ]
+            ],
             'login' => [
                 'type' => Literal::class,
                 'options' => [
@@ -103,7 +113,7 @@ return [
     'session_containers' => [
         'Zend_Auth'
     ],
-    'access_filter' > [
+    'access_filter' => [
         'options' => [
             'mode' => 'restrictive'
         ],
@@ -112,7 +122,8 @@ return [
                 [
                     'actions' => [
                         'applicationList',
-                        'applicationDetail'
+                        'applicationDetail',
+                        'applicationForm'
                     ],
                     'allow' => '@'
                 ]

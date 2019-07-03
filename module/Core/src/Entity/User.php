@@ -138,7 +138,7 @@ class User
      * @param DateTime $dateOfBirth
      * @return $this
      */
-    public function setDateOfBirth(DateTime $dateOfBirth)
+    public function setDateOfBirth(DateTime $dateOfBirth = null)
     {
         $this->dateOfBirth = $dateOfBirth;
         return $this;

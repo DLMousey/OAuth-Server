@@ -3,11 +3,14 @@
 namespace Application\Controller;
 
 use Application\Filter\LoginFilter;
+use Application\Filter\RegisterFilter;
 use Application\Form\LoginForm;
+use Application\Form\RegisterForm;
 use Core\Service\AuthenticationManager;
 use Core\Service\UserService;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Result;
+use Zend\Form\Element\Password;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -31,6 +34,35 @@ class AuthenticationController extends AbstractActionController
 
             if($result->getCode() == Result::SUCCESS) {
                 return $this->redirect()->toRoute('applications');
+            }
+        }
+
+        return new ViewModel([
+            'form' => $form
+        ]);
+    }
+
+    public function registerAction()
+    {
+        $form = new RegisterForm();
+        $form->setInputFilter(new RegisterFilter());
+
+        if($this->getRequest()->isPost()) {
+            $form->setData($this->params()->fromPost());
+
+            if($form->isValid()) {
+                $this->getUserService()->create(
+                    $form->getInputFilter()->getValues()
+                );
+
+                $authResult = $this->getAuthenticationManager()->login(
+                    $form->getInputFilter()->getValue('email'),
+                    $form->getInputFilter()->getValue('password')
+                );
+
+                if($authResult == Result::SUCCESS) {
+                    return $this->redirect()->toRoute('application-list');
+                }
             }
         }
 

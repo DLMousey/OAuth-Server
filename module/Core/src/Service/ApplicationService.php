@@ -10,21 +10,27 @@ use Zend\Hydrator\ClassMethods;
 class ApplicationService
 {
     protected $applicationMapper;
+    protected $userService;
 
     public function find($id)
     {
         return $this->getApplicationMapper()->find($id);
     }
 
-    public function create(array $data)
+    public function create(array $data, string $identity)
     {
         $hydrator = new ClassMethods();
         $application = new Application();
+
+        if(!$user = $this->getUserService()->findByEmail($identity)) {
+            return false;
+        }
 
         $hydrator->hydrate($data, $application);
 
         $application->setClientId(base64_encode(random_bytes(6)));
         $application->setClientSecret(base64_encode(random_bytes(32)));
+        $application->setOwner($user);
         $application->setDateCreated(new DateTime());
 
         $this->getApplicationMapper()->persist($application);
@@ -49,5 +55,23 @@ class ApplicationService
     public function getApplicationMapper() : ApplicationMapper
     {
         return $this->applicationMapper;
+    }
+
+    /**
+     * @param UserService $userService
+     * @return $this
+     */
+    public function setUserService(UserService $userService)
+    {
+        $this->userService = $userService;
+        return $this;
+    }
+
+    /**
+     * @return UserService
+     */
+    public function getUserService() : UserService
+    {
+        return $this->userService;
     }
 }

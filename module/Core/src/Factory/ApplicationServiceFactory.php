@@ -18,6 +18,7 @@ class ApplicationServiceFactory implements FactoryInterface
 
         $service = new ApplicationService();
         $service->setApplicationMapper($repo);
+        $service->setUserService($container->get('core_user_service'));
 
         return $service;
     }

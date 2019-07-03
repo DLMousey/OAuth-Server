@@ -2,7 +2,9 @@
 
 namespace Core\Service;
 
+use Core\Entity\User;
 use Core\Mapper\UserMapper;
+use Zend\Hydrator\ClassMethods;
 
 class UserService
 {
@@ -26,6 +28,22 @@ class UserService
         return $this->getUserMapper()->findOneBy([
             'email' => $email
         ]);
+    }
+
+    public function create(array $data)
+    {
+        $user = new User();
+
+        if(empty($data['date_of_birth'])) {
+            $data['date_of_birth'] = null;
+        }
+
+        $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+
+        $hydrator = new ClassMethods();
+        $hydrator->hydrate($data, $user);
+
+        return $this->getUserMapper()->save($user);
     }
 
     /**

@@ -15,7 +15,9 @@ class AuthenticationServiceFactory implements FactoryInterface
     {
         $sessionManager = $container->get(SessionManager::class);
         $authStorage = new SessionStorage('Zend_Auth', 'session', $sessionManager);
+
         $authAdapter = new AuthAdapter();
+        $authAdapter->setUserService($container->get('core_user_service'));
 
         return new AuthenticationService($authStorage, $authAdapter);
     }

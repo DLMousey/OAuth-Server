@@ -2,8 +2,10 @@
 
 namespace Core\Service;
 
+use Core\Entity\User;
 use Exception;
 use Zend\Authentication\AuthenticationService as ZendAuthService;
+use Zend\Hydrator\ClassMethods;
 
 class AuthenticationManager
 {
@@ -33,19 +35,38 @@ class AuthenticationManager
     }
 
     public function filterAccess(string $controllerName, string $actionName) {
-//        $mode = isset($this->getConfig('options')['mode']) ?
-//            $this->getConfig('options')['mode'] :
-//            'restrictive';
+        $mode = isset($this->getConfig('access_filter')['options']['mode']) ?
+            $this->getConfig('access_filter')['options']['mode'] :
+            'restrictive';
 
-        $config = $this->getConfig('options');
-
-        if($mode != 'restrictive' || $mode != 'permissive') {
+        $validModes = ['restrictive', 'permissive'];
+        if(!in_array($mode, $validModes)) {
             throw new Exception('Invalid access filter mode provided');
         }
 
-        if(isset($this->getConfig('controllers')[$controllerName])) {
-            $items = $this->getConfig('controllers')[$controllerName];
-            die(dump($items));
+        if(isset($this->getConfig('access_filter')['controllers'][$controllerName])) {
+            $items = $this->getConfig('access_filter')['controllers'][$controllerName];
+
+            foreach($items as $item) {
+                $actionList = $item['actions'];
+                $allow = $item['allow'];
+
+                if(is_array($actionList) && in_array($actionName, $actionList) || $actionList == '*') {
+                    if($allow == '*') {
+                        return true;
+                    } elseif($allow == '@' && $this->getAuthenticationService()->hasIdentity()) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+
+            if($mode == 'restrictive' && !$this->getAuthenticationService()->hasIdentity()) {
+                return false;
+            }
+
+            return true;
         }
     }
 
