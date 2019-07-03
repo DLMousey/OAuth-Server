@@ -7,6 +7,7 @@
 
 namespace Application;
 
+use Application\Controller\ApplicationController;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
@@ -24,6 +25,16 @@ return [
                     ],
                 ],
             ],
+            'application-list' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/applications',
+                    'defaults' => [
+                        'controller' => Controller\ApplicationController::class,
+                        'action' => 'applicationList'
+                    ]
+                ]
+            ],
             'application-detail' => [
                 'type' => Segment::class,
                 'options' => [
@@ -34,14 +45,34 @@ return [
                     ]
                 ]
             ],
-            'create-application' => [
+            'application-create' => [
                 'type' => Literal::class,
                 'options' => [
                     'route' => '/applications/create',
                     'defaults' => [
                         'controller' => Controller\ApplicationController::class,
-                        'action' => 'createForm'
+                        'action' => 'applicationCreate'
                     ],
+                ]
+            ],
+            'login' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/login',
+                    'defaults' => [
+                        'controller' => Controller\AuthenticationController::class,
+                        'action' => 'login'
+                    ]
+                ]
+            ],
+            'logout' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/logout',
+                    'defaults' => [
+                        'controller' => Controller\AuthenticationController::class,
+                        'action' => 'logout'
+                    ]
                 ]
             ]
         ],
@@ -49,7 +80,8 @@ return [
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
-            Controller\ApplicationController::class => Factory\ApplicationControllerFactory::class
+            Controller\ApplicationController::class => Factory\ApplicationControllerFactory::class,
+            Controller\AuthenticationController::class => Factory\AuthenticationControllerFactory::class
         ],
     ],
     'view_manager' => [
@@ -68,4 +100,23 @@ return [
             __DIR__ . '/../view',
         ],
     ],
+    'session_containers' => [
+        'Zend_Auth'
+    ],
+    'access_filter' > [
+        'options' => [
+            'mode' => 'restrictive'
+        ],
+        'controllers' => [
+            ApplicationController::class => [
+                [
+                    'actions' => [
+                        'applicationList',
+                        'applicationDetail'
+                    ],
+                    'allow' => '@'
+                ]
+            ]
+        ]
+    ]
 ];

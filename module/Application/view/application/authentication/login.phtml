@@ -1,0 +1,23 @@
+<?php
+    $this->headTitle('Sign in');
+    $form = $this->form;
+?>
+
+<div class="row">
+    <div class="col-sm-12">
+        <h2>Sign in</h2>
+        <?= $this->form()->openTag($form) ?>
+        <div class="form-group">
+            <?= $this->formLabel($form->get('email')); ?>
+            <?= $this->formElement($form->get('email')); ?>
+        </div>
+        <div class="form-group">
+            <?= $this->formLabel($form->get('password')); ?>
+            <?= $this->formElement($form->get('password')); ?>
+        </div>
+        <div class="form-group">
+            <?= $this->formElement($form->get('submit')); ?>
+        </div>
+        <?= $this->form()->closeTag() ?>
+    </div>
+</div>

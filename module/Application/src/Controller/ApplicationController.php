@@ -22,7 +22,7 @@ class ApplicationController extends AbstractActionController
         ]);
     }
 
-    public function createFormAction()
+    public function applicationCreateAction()
     {
         $form = new ApplicationForm();
 

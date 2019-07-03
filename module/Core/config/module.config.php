@@ -2,8 +2,11 @@
 
 namespace Core;
 
-use Core\Factory\ApplicationServiceFactory;
+use Core\Factory;
+use Core\Service;
 use Doctrine\ORM\Mapping\Driver\XmlDriver;
+use Zend\Authentication\AuthenticationService;
+use Zend\Session\SessionManager;
 
 return [
     'doctrine' => [
@@ -21,10 +24,16 @@ return [
     ],
     'service_manager' => [
         'aliases' => [
-            'core_application_service' => ApplicationService::class
+            'core_application_service' => Service\ApplicationService::class,
+            'core_user_service' => Service\UserService::class,
+            'core_authentication_manager' => Service\AuthenticationManager::class
         ],
         'factories' => [
-            ApplicationService::class => ApplicationServiceFactory::class
+            Service\ApplicationService::class => Factory\ApplicationServiceFactory::class,
+            Service\UserService::class => Factory\UserServiceFactory::class,
+            Service\AuthenticationManager::class => Factory\AuthenticationManagerFactory::class,
+            AuthenticationService::class => Factory\AuthenticationServiceFactory::class,
+            SessionManager::class => Factory\SessionManagerFactory::class
         ]
     ]
 ];

@@ -15,6 +15,7 @@ class Application
     protected $clientSecret;
     protected $dateCreated;
     protected $dateUpdated;
+    protected $owner;
     protected $users;
 
     public function __construct()
@@ -164,6 +165,24 @@ class Application
     public function getDateUpdated() : DateTime
     {
         return $this->dateUpdated;
+    }
+
+    /**
+     * @param User $owner
+     * @return $this
+     */
+    public function setOwner(User $owner)
+    {
+        $this->owner = $owner;
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getOwner() : User
+    {
+        return $this->owner;
     }
 
     /**

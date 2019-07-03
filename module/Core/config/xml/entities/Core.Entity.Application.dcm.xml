@@ -13,6 +13,7 @@
         <field name="dateCreated" column="date_created" type="datetime" />
         <field name="dateUpdated" column="date_updated" type="datetime" nullable="true" />
 
+        <many-to-one field="owner" target-entity="Core\Entity\User" />
         <many-to-many field="users" mapped-by="applications" target-entity="Core\Entity\User" />
     </entity>
 </doctrine-mapping>
