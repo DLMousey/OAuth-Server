@@ -2,9 +2,11 @@
 
 namespace Core\Service;
 
+use Core\Entity\Application;
 use Core\Entity\User;
 use Core\Entity\VerificationToken;
 use Core\Mapper\VerificationTokenMapper;
+use DateInterval;
 use DateTime;
 use Exception;
 
@@ -23,11 +25,10 @@ class VerificationTokenService
 
     /**
      * @param User $user
-     * @param array $data
      * @return VerificationToken
      * @throws Exception
      */
-    public function create(User $user, array $data)
+    public function create(User $user, Application $application)
     {
         $token = new VerificationToken();
         $token->setToken($this->generateToken());
@@ -35,12 +36,23 @@ class VerificationTokenService
         $token->setExpiryDate($this->generateExpiry());
         $token->setUser($user);
 
-        return $this->getVerificationTokenMapper()->save($token);
+        $this->getVerificationTokenMapper()->persist($token);
+        $this->getVerificationTokenMapper()->flush();
+
+        return $token;
     }
 
     private function generateToken()
     {
         return bin2hex(random_bytes(16));
+    }
+
+    private function generateExpiry()
+    {
+        $dt = new DateTime();
+        $dt->add(new DateInterval('PT1H'));
+
+        return $dt;
     }
 
     /**

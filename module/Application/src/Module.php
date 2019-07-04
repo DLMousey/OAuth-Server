@@ -40,7 +40,17 @@ class Module
         $guestActions = ['login', 'register'];
 
         if(!in_array($actionName, $guestActions) && !$authManager->filterAccess($controllerName, $actionName)) {
-            die(dump('not logged in and trying to access user action'));
+            $uri = $event->getApplication()->getRequest()->getUri();
+            $uri->setScheme(null)
+                ->setHost(null)
+                ->setPort(null)
+                ->setUserInfo(null);
+
+            $redirectUrl = $uri->toString();
+
+            return $controller->redirect()->toRoute('login', [], [
+                'query' => ['redirectUrl' => $redirectUrl]
+            ]);
         }
     }
 }

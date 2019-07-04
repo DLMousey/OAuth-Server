@@ -2,7 +2,9 @@
 
 namespace Core\Service;
 
+use Core\Entity\Application;
 use Core\Entity\User;
+use Core\Entity\VerificationToken;
 use Core\Mapper\UserMapper;
 use Zend\Hydrator\ClassMethods;
 
@@ -43,6 +45,23 @@ class UserService
         $hydrator = new ClassMethods();
         $hydrator->hydrate($data, $user);
 
+        return $this->getUserMapper()->save($user);
+    }
+
+    public function save(User $user)
+    {
+        $this->getUserMapper()->save($user);
+    }
+
+    public function addApplication(User $user, Application $application)
+    {
+        $user->addApplication($application);
+        return $this->getUserMapper()->save($user);
+    }
+
+    public function addVerificationToken(User $user, VerificationToken $verificationToken)
+    {
+        $user->addVerificationToken($verificationToken);
         return $this->getUserMapper()->save($user);
     }
 

@@ -8,6 +8,7 @@
 namespace Application;
 
 use Application\Controller\ApplicationController;
+use Application\Controller\OAuthController;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
@@ -84,6 +85,29 @@ return [
                         'action' => 'logout'
                     ]
                 ]
+            ],
+            'oauth' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/oauth',
+                    'defaults' => [
+                        'controller' => Controller\OAuthController::class,
+                        'action' => 'userConsent'
+                    ]
+                ],
+                'may_terminate' => true,
+                'child_routes' => [
+                    'consent-granted' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/granted',
+                            'defaults' => [
+                                'controller' => Controller\OAuthController::class,
+                                'action' => 'userConsentGrant'
+                            ]
+                        ]
+                    ]
+                ]
             ]
         ],
     ],
@@ -91,7 +115,8 @@ return [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
             Controller\ApplicationController::class => Factory\ApplicationControllerFactory::class,
-            Controller\AuthenticationController::class => Factory\AuthenticationControllerFactory::class
+            Controller\AuthenticationController::class => Factory\AuthenticationControllerFactory::class,
+            Controller\OAuthController::class => Factory\OAuthControllerFactory::class
         ],
     ],
     'view_manager' => [
@@ -124,6 +149,14 @@ return [
                         'applicationList',
                         'applicationDetail',
                         'applicationForm'
+                    ],
+                    'allow' => '@'
+                ]
+            ],
+            OAuthController::class => [
+                [
+                    'actions' => [
+                        'userConsent'
                     ],
                     'allow' => '@'
                 ]

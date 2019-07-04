@@ -2,6 +2,7 @@
 
 namespace Core\Service;
 
+use Core\Entity\User;
 use DateTime;
 use Core\Entity\Application;
 use Core\Mapper\ApplicationMapper;
@@ -15,6 +16,11 @@ class ApplicationService
     public function find($id)
     {
         return $this->getApplicationMapper()->find($id);
+    }
+
+    public function findByClientId(string $clientId)
+    {
+        return $this->getApplicationMapper()->findOneByClientId($clientId);
     }
 
     public function create(array $data, string $identity)
@@ -32,6 +38,16 @@ class ApplicationService
         $application->setClientSecret(base64_encode(random_bytes(32)));
         $application->setOwner($user);
         $application->setDateCreated(new DateTime());
+
+        $this->getApplicationMapper()->persist($application);
+        $this->getApplicationMapper()->flush();
+
+        return $application;
+    }
+
+    public function addUser(Application $application, User $user)
+    {
+        $application->addUser($user);
 
         $this->getApplicationMapper()->persist($application);
         $this->getApplicationMapper()->flush();

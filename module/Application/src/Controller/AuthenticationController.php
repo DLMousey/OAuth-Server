@@ -61,7 +61,11 @@ class AuthenticationController extends AbstractActionController
                 );
 
                 if($authResult == Result::SUCCESS) {
-                    return $this->redirect()->toRoute('application-list');
+                    if($this->params()->fromQuery('redirectUrl')) {
+                        return $this->redirect()->toUrl($this->params()->fromQuery('redirectUrl'));
+                    } else {
+                        return $this->redirect()->toRoute('application-list');
+                    }
                 }
             }
         }

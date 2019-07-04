@@ -11,6 +11,7 @@ class Application
     protected $name;
     protected $description;
     protected $avatarPath;
+    protected $redirectUrl;
     protected $clientId;
     protected $clientSecret;
     protected $dateCreated;
@@ -93,6 +94,24 @@ class Application
     public function getAvatarPath() : string
     {
         return $this->avatarPath;
+    }
+
+    /**
+     * @param string $redirectUrl
+     * @return $this
+     */
+    public function setRedirectUrl(string $redirectUrl)
+    {
+        $this->redirectUrl = $redirectUrl;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRedirectUrl() : string
+    {
+        return $this->redirectUrl;
     }
 
     /**
@@ -198,7 +217,7 @@ class Application
     /**
      * @return ArrayCollection
      */
-    public function getUsers() : ArrayCollection
+    public function getUsers()
     {
         return $this->users;
     }

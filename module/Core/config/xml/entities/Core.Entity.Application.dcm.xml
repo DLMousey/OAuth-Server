@@ -8,6 +8,7 @@
         <field name="name" column="name" type="string" />
         <field name="description" column="description" type="text" />
         <field name="avatarPath" column="avatar_path" type="string" nullable="true" />
+        <field name="redirectUrl" column="redirect_url" type="string" nullable="true" />
         <field name="clientId" column="client_id" type="string" />
         <field name="clientSecret" column="client_secret" type="clientsecret" />
         <field name="dateCreated" column="date_created" type="datetime" />
