@@ -33,7 +33,11 @@ class AuthenticationController extends AbstractActionController
             );
 
             if($result->getCode() == Result::SUCCESS) {
-                return $this->redirect()->toRoute('applications');
+                if($this->params()->fromQuery('redirectUrl')) {
+                    return $this->redirect()->toUrl(urldecode($this->params()->fromQuery(('redirectUrl'))));
+                } else {
+                    return $this->redirect()->toRoute('applications');
+                }
             }
         }
 

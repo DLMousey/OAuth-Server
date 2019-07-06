@@ -271,7 +271,7 @@ class User
     /**
      * @return ArrayCollection
      */
-    public function getApplications() : ArrayCollection
+    public function getApplications()
     {
         return $this->applications;
     }

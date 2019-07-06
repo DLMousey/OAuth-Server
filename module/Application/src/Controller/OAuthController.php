@@ -28,6 +28,14 @@ class OAuthController extends AbstractActionController
             return false;
         }
 
+        $user = $this->getUserService()->findByEmail($this->identity());
+        if($user->getApplications()->contains($application)) {
+            $vm = new ViewModel();
+            $vm->setTemplate('application/o-auth/already-authorised');
+
+            return $vm;
+        }
+
         return new ViewModel([
             'application' => $application
         ]);

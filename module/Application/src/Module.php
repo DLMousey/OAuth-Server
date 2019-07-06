@@ -49,7 +49,7 @@ class Module
             $redirectUrl = $uri->toString();
 
             return $controller->redirect()->toRoute('login', [], [
-                'query' => ['redirectUrl' => $redirectUrl]
+                'query' => ['redirectUrl' => urldecode($redirectUrl)]
             ]);
         }
     }

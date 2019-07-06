@@ -124,7 +124,7 @@ return [
                     'consent-granted-callback' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/granted',
+                            'route' => '/granted-callback',
                             'verb' => 'post',
                             'defaults' => [
                                 'controller' => Controller\OAuthController::class,
