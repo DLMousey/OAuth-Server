@@ -1,21 +1,110 @@
-<div class="row text-center">
-    <div class="col-sm-8 col-sm-offset-2">
-        <h2>An application is trying to access your account</h2>
-        <div class="col-sm-12">
-            <p>The app identifying itself as <b><?= $this->application->getName() ?></b>
-                is a third party application not developed by Enderstudy,<br>
-                please excercise caution when allowing third party apps to access your account</p>
-            <p>Some details about this application;</p>
-            <ul>
-                <li><?= $this->application->getUsers()->count() ?> Users</li>
-                <li>Registered <?= $this->application->getDateCreated()->format('d/m/Y H:i:s') ?></li>
-            </ul>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/css/enderstudy.css" />
+    <link rel="stylesheet" href="/css/authorisation.css" />
+    <?= $this->headTitle('Enderstudy OAuth')->setSeparator(' - ')->setAutoEscape(false) ?>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="col-12 authorisation-prompt d-flex flex-column">
+        <div class="header d-flex">
+            <div class="col-6">
+                <img src="/img/LogoFulltext.svg" />
+            </div>
+            <div class="col-6 text-right">
+                <span class="text-info text-uppercase">authorisation prompt</span>
+            </div>
         </div>
-        <div class="col-sm-12">
-            <a href="<?= $this->url('oauth/consent-granted', [], [
-                    'query' => ['client_id' => $this->application->getClientId()]
-            ]) ?>" class="btn btn-warning">Allow</a>
-            <a class="btn btn-primary">Deny</a>
+        <div class="content d-flex flex-column">
+            <div class="row d-flex mb-3">
+                <div class="col-12 d-flex justify-content-center">
+                    <h1>An application is requesting access to your account</h1>
+                </div>
+                <div class="col-12 d-flex justify-content-center mt-3">
+                    <img class="img-circle img-fluid border-danger mr-1" src="https://i.pravatar.cc/300" />
+                    <img class="img-circle img-fluid border-info ml-1" src="https://i.pravatar.cc/300" />
+                </div>
+            </div>
+            <hr>
+            <div class="row d-flex mt-3">
+                <div class="col-12 d-flex justify-content-center mb-1">
+                    <h5>The app is identifying itself as
+                        <span class="text-danger">"<?= $this->application->getName() ?>"</span>
+                    </h5>
+                </div>
+                <div class="col-12 d-flex justify-content-center text-center mb-3">
+                    <ul>
+                        <li>It was <span class="text-danger">not</span> developed by Enderstudy</li>
+                        <li>It was registered on
+                            <span class="text-danger"><?= $this->application->getDateCreated()->format('F jS Y') ?></span>
+                        </li>
+                        <li>It has <span class="text-danger"><?= $this->application->getUsers()->count() ?></span> users</li>
+                    </ul>
+                </div>
+                <div class="col-12 d-flex justify-content-center text-center mb-3">
+                    <h5>App's Website: <a class="text-info" href="//youtube.com">https://youtube.com</a></h5>
+                </div>
+                <hr>
+                <div class="col-12 d-flex justify-content-center">
+                    <h5>Clicking "Allow" will give this application access to your...</h5>
+                </div>
+                <div class="col-8 offset-2 d-flex flex-column justify-content-center mt-3">
+                    <!-- @todo - replace with iteration over requested scopes -->
+                    <div class="row">
+                        <div class="col-6">
+                            <b>Personal Information</b>
+                        </div>
+                        <div class="col-6">
+                            Your email address and profile picture
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <b>Course Progress</b>
+                        </div>
+                        <div class="col-6">
+                            Your progression through courses & lessons
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <b>Discussions</b>
+                        </div>
+                        <div class="col-6">
+                            Threads & replies you've posted in discussions
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <b>Quizzes</b>
+                        </div>
+                        <div class="col-6">
+                            Quizzes you've completed & answers to questions
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="col-12 d-flex justify-content-center">
+                    <h5 class="text-center">
+                        You can revoke this application's access to your account <br>
+                        at any time by <a href="#" class="text-info">visiting the "Apps" section of your dashboard</a>
+                    </h5>
+                </div>
+                <div class="col-12 d-flex justify-content-center mt-3">
+                    <a href="<?= $this->url('oauth/consent-granted', [], [
+                            'query' => ['client_id' => $this->application->getClientId()]
+                        ]) ?>" class="btn btn-primary mr-3">Allow</a>
+                    <a class="btn btn-danger ml-3">Deny</a>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+</body>
+</html>

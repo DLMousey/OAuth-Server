@@ -1,0 +1,30 @@
+html, body {
+    margin: 15px;
+}
+
+.content {
+    padding: 15px;
+}
+
+.img-circle {
+    border-radius: 50%;
+    max-width: 16%;
+    border: 3px solid #111;
+}
+
+.img-circle .border-danger {
+    border-color: #DD2052 !important;
+}
+
+.img-circle .border-info {
+    border-color: #2082DD !important;
+}
+
+.btn {
+    padding: 12px 26px;
+}
+
+.btn-danger {
+    color: #FFF !important;
+    background: #DD2052;
+}

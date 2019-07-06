@@ -1,7 +1,15 @@
-@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,400,500,600,700&display=swap');
 
 html, body {
     font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.text-danger {
+    color: #DD2052 !important;
+}
+
+.text-info {
+    color: #2082DD !important;
 }
 
 .btn {
@@ -15,4 +23,10 @@ nav.navbar {
 
 .nav-item a {
     color: #FFF;
+}
+
+hr {
+    width: 100%;
+    height: 1px;
+    background: #EAEAEA;
 }

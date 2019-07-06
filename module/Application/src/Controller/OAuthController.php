@@ -30,15 +30,17 @@ class OAuthController extends AbstractActionController
 
         $user = $this->getUserService()->findByEmail($this->identity());
         if($user->getApplications()->contains($application)) {
-            $vm = new ViewModel();
+            $vm = new ViewModel(['application' => $application]);
             $vm->setTemplate('application/o-auth/already-authorised');
+            $vm->setTerminal(true);
 
             return $vm;
         }
 
-        return new ViewModel([
-            'application' => $application
-        ]);
+        $vm = new ViewModel(['application' => $application]);
+        $vm->setTerminal(true);
+
+        return $vm;
     }
 
     public function userConsentGrantAction()
