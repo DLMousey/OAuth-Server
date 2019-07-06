@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap');
+
+html, body {
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.btn {
+    border-radius: 0;
+}
+
+nav.navbar {
+    background: #2082DD;
+    color: #FFF;
+}
+
+.nav-item a {
+    color: #FFF;
+}
