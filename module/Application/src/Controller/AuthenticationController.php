@@ -6,6 +6,8 @@ use Application\Filter\LoginFilter;
 use Application\Filter\RegisterFilter;
 use Application\Form\LoginForm;
 use Application\Form\RegisterForm;
+use Core\Exception\AlreadyLoggedInException;
+use Core\Exception\NotLoggedInException;
 use Core\Service\AuthenticationManager;
 use Core\Service\UserService;
 use Zend\Authentication\AuthenticationService;
@@ -27,16 +29,20 @@ class AuthenticationController extends AbstractActionController
 
         if($this->getRequest()->isPost()) {
             $form->getInputFilter()->setData($this->params()->fromPost());
-            $result = $this->getAuthenticationManager()->login(
-                $form->getInputFilter()->getValue('email'),
-                $form->getInputFilter()->getValue('password')
-            );
+            try {
+                $result = $this->getAuthenticationManager()->login(
+                    $form->getInputFilter()->getValue('email'),
+                    $form->getInputFilter()->getValue('password')
+                );
+            } catch (AlreadyLoggedInException $e) {
+                return $this->redirect()->toRoute('application-list');
+            }
 
             if($result->getCode() == Result::SUCCESS) {
                 if($this->params()->fromQuery('redirectUrl')) {
                     return $this->redirect()->toUrl(urldecode($this->params()->fromQuery(('redirectUrl'))));
                 } else {
-                    return $this->redirect()->toRoute('applications');
+                    return $this->redirect()->toRoute('application-list');
                 }
             }
         }
@@ -81,7 +87,14 @@ class AuthenticationController extends AbstractActionController
 
     public function logoutAction()
     {
-        $this->getAuthenticationManager()->logout();
+        try {
+            $this->getAuthenticationManager()->logout();
+        } catch(NotLoggedInException $e) {
+            die(dump($e));
+        }
+
+        return $this->redirect()->toRoute('login');
+
     }
 
     /**

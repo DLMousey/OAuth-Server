@@ -2,10 +2,10 @@
 
 namespace Core\Service;
 
-use Core\Entity\User;
+use Core\Exception\NotLoggedInException;
 use Exception;
 use Zend\Authentication\AuthenticationService as ZendAuthService;
-use Zend\Hydrator\ClassMethods;
+use Core\Exception\AlreadyLoggedInException;
 
 class AuthenticationManager
 {
@@ -15,7 +15,7 @@ class AuthenticationManager
     public function login($email, $password)
     {
         if($this->getAuthenticationService()->getIdentity() != null) {
-            throw new Exception('Already logged in');
+            throw new AlreadyLoggedInException('Already logged in');
         }
 
         $adapter = $this->getAuthenticationService()->getAdapter();
@@ -28,7 +28,7 @@ class AuthenticationManager
     public function logout()
     {
         if($this->getAuthenticationService()->getIdentity() == null) {
-            throw new Exception('Not logged in');
+            throw new NotLoggedInException('Not logged in');
         }
 
         $this->getAuthenticationService()->clearIdentity();

@@ -8,6 +8,7 @@
 namespace Application;
 
 use Application\Controller\ApplicationController;
+use Application\Controller\AuthenticationController;
 use Application\Controller\OAuthController;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
@@ -168,6 +169,15 @@ return [
             'mode' => 'restrictive'
         ],
         'controllers' => [
+            AuthenticationController::class => [
+                [
+                    'actions' => [
+                        'login',
+                        'logout'
+                    ],
+                    'allow' => '*'
+                ]
+            ],
             ApplicationController::class => [
                 [
                     'actions' => [
