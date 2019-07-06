@@ -2,8 +2,6 @@
 
 namespace Application\Controller;
 
-use Exception;
-use DateTime;
 use Zend\View\Model\ViewModel;
 use Zend\Mvc\Controller\AbstractActionController;
 use Application\Form\ApplicationForm;
@@ -12,6 +10,13 @@ use Core\Service\ApplicationService;
 class ApplicationController extends AbstractActionController
 {
     protected $applicationService;
+
+    public function applicationListAction()
+    {
+        return new ViewModel([
+            'applications' => $this->getApplicationService()->findAll($this->identity())
+        ]);
+    }
 
     public function applicationDetailAction()
     {

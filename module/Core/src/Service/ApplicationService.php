@@ -2,16 +2,32 @@
 
 namespace Core\Service;
 
-use Core\Entity\User;
 use DateTime;
+use RuntimeException;
+use Zend\Hydrator\ClassMethods;
+use Core\Entity\User;
 use Core\Entity\Application;
 use Core\Mapper\ApplicationMapper;
-use Zend\Hydrator\ClassMethods;
 
 class ApplicationService
 {
     protected $applicationMapper;
     protected $userService;
+
+    public function findAll(string $identity = null)
+    {
+        if($identity == null) {
+            return [];
+        }
+
+        if(!$user = $this->getUserService()->findByEmail($identity)) {
+            throw new RuntimeException('Unable to locate user with given identity');
+        }
+
+        return $this->getApplicationMapper()->findBy([
+            'owner' => $user
+        ]);
+    }
 
     public function find($id)
     {

@@ -1,0 +1,24 @@
+<h2>Your Applications</h2>
+
+<div class="row">
+    <?php foreach($this->applications as $application) : ?>
+        <div class="col-sm-12">
+            <div class="col-sm-1">
+                <img class="img-circle img-responsive" src="https://placehold.it/80/80" />
+            </div>
+            <div class="col-sm-10">
+                <div class="col-sm-12">
+                    <dl>
+                        <dt>Application Name</dt>
+                        <dd><?= $application->getName() ?></dd>
+                        <dt>Authorised Users</dt>
+                        <dd><?= $application->getUsers()->count() ?></dd>
+                    </dl>
+                </div>
+                <div class="col-sm-12">
+                    <a href="<?= $this->url('application-detail/edit', ['id' => 1]) ?>" class="btn btn-primary">Edit</a>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>

@@ -39,10 +39,23 @@ return [
             'application-detail' => [
                 'type' => Segment::class,
                 'options' => [
-                    'route' => '/applications[/:id]',
+                    'route' => '/applications/:id',
                     'defaults' => [
                         'controller' => Controller\ApplicationController::class,
                         'action' => 'applicationDetail'
+                    ]
+                ],
+                'may_terminate' => true,
+                'child_routes' => [
+                    'edit' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/edit',
+                            'defaults' => [
+                                'controller' => Controller\ApplicationController::class,
+                                'action' => 'applicationEdit'
+                            ]
+                        ]
                     ]
                 ]
             ],
