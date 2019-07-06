@@ -10,5 +10,15 @@
         <field name="expiryDate" column="expiry_date" type="datetime" />
 
         <many-to-one field="user" target-entity="Core\Entity\User" inversed-by="verificationTokens" />
+        <many-to-many field="scopes" target-entity="Core\Entity\Scope">
+            <join-table name="verification_token_scopes">
+                <join-columns>
+                    <join-column name="scope_id" referenced-column-name="id" />
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="verification_token_id" referenced-column-name="id" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
     </entity>
 </doctrine-mapping>

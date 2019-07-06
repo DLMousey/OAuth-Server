@@ -3,6 +3,7 @@
 namespace Core\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class VerificationToken
 {
@@ -11,6 +12,12 @@ class VerificationToken
     protected $dateCreated;
     protected $expiryDate;
     protected $user;
+    protected $scopes;
+
+    public function __construct()
+    {
+        $this->scopes = new ArrayCollection();
+    }
 
     /**
      * @param string $id
@@ -100,5 +107,49 @@ class VerificationToken
     public function getUser() : User
     {
         return $this->user;
+    }
+
+    /**
+     * @param array $scopes
+     * @return $this
+     */
+    public function setScopes(array $scopes)
+    {
+        $this->scopes = $scopes;
+        return $this;
+    }
+
+    /**
+     * @param Scope $scope
+     * @return $this
+     */
+    public function addScope(Scope $scope)
+    {
+        if(!$this->scopes->contains($scope)) {
+            $this->scopes->add($scope);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Scope $scope
+     * @return $this
+     */
+    public function removeScope(Scope $scope)
+    {
+        if($this->scopes->contains($scope)) {
+            $this->scopes->remove($scope);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getScopes()
+    {
+        return $this->scopes;
     }
 }

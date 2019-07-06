@@ -5,10 +5,10 @@ namespace Application\Controller;
 
 use Core\Service\AccessTokenService;
 use Core\Service\ApplicationService;
+use Core\Service\ScopeService;
 use Core\Service\UserService;
 use Core\Service\VerificationTokenService;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 class OAuthController extends AbstractActionController
@@ -17,15 +17,25 @@ class OAuthController extends AbstractActionController
     protected $verificationTokenService;
     protected $userService;
     protected $accessTokenService;
+    protected $scopeService;
 
     public function userConsentAction()
     {
         // @todo return credentials instead of view is user has already authorised app
 
         $clientId = $this->params()->fromQuery('client_id');
+        $scopeNames = explode(',', $this->params()->fromQuery('scope'));
+
         if(!$application = $this->getApplicationService()->findByClientId($clientId)) {
             // @todo - tell user the app did a stupid
             return false;
+        }
+
+        $scopes = [];
+        foreach($scopeNames as $s) {
+            if($instance = $this->getScopeService()->findByKey($s)) {
+                $scopes[] = $instance;
+            }
         }
 
         $user = $this->getUserService()->findByEmail($this->identity());
@@ -37,7 +47,10 @@ class OAuthController extends AbstractActionController
             return $vm;
         }
 
-        $vm = new ViewModel(['application' => $application]);
+        $vm = new ViewModel([
+            'application' => $application,
+            'scopes' => $scopes
+        ]);
         $vm->setTerminal(true);
 
         return $vm;
@@ -53,7 +66,15 @@ class OAuthController extends AbstractActionController
         $user = $this->getUserService()->findByEmail($this->identity());
 
         $verificationToken = $this->getVerificationTokenService()->create($user, $application);
+        $scopeKeys = explode(',', $this->params()->fromQuery('scope'));
+        $scopes = [];
+        foreach($scopeKeys as $key) {
+            if($scope = $this->getScopeService()->findByKey($key)) {
+                $scopes[] = $scope;
+            }
+        }
 
+        $verificationToken->setScopes($scopes);
         $user->addApplication($application);
         $user->addVerificationToken($verificationToken);
         $this->getUserService()->save($user);
@@ -83,7 +104,7 @@ class OAuthController extends AbstractActionController
         }
 
         $user = $verificationToken->getUser();
-        $accessToken = $this->getAccessTokenService()->create($user, $application);
+        $accessToken = $this->getAccessTokenService()->create($user, $application, $verificationToken->getScopes());
         $user->addAccessToken($accessToken);
 
         $this->getResponse()->getHeaders()->addHeaderLine('Content-Type', 'application/json');
@@ -93,7 +114,9 @@ class OAuthController extends AbstractActionController
             'data' => [
                 'access_token' => $accessToken->getToken(),
                 'token_type' => 'bearer',
-                'scope' => 'todo'
+                'scope' => implode(',', array_map(function($sco) {
+                    return $sco->getKey();
+                }, $accessToken->getScopes()->getValues()))
             ]
         ]));
 
@@ -182,5 +205,23 @@ class OAuthController extends AbstractActionController
     public function getAccessTokenService() : AccessTokenService
     {
         return $this->accessTokenService;
+    }
+
+    /**
+     * @param ScopeService $scopeService
+     * @return $this
+     */
+    public function setScopeService(ScopeService $scopeService)
+    {
+        $this->scopeService = $scopeService;
+        return $this;
+    }
+
+    /**
+     * @return ScopeService
+     */
+    public function getScopeService() : ScopeService
+    {
+        return $this->scopeService;
     }
 }

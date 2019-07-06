@@ -1,0 +1,13 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="Core\Entity\Scope" table="scopes" repository-class="Core\Mapper\ScopeMapper">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="key" column="key" type="string" nullable="true" />
+        <field name="name" column="name" type="string" />
+        <field name="description" column="description" type="string" />
+
+    </entity>
+</doctrine-mapping>

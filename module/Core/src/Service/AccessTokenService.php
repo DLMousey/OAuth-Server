@@ -7,6 +7,7 @@ use Core\Entity\AccessToken;
 use Core\Entity\Application;
 use Core\Entity\User;
 use Core\Mapper\AccessTokenMapper;
+use Doctrine\ORM\PersistentCollection;
 
 class AccessTokenService
 {
@@ -39,7 +40,7 @@ class AccessTokenService
         return $this->getAccessTokenMapper()->findOneByToken($token);
     }
 
-    public function create(User $user, Application $application)
+    public function create(User $user, Application $application, PersistentCollection $scopes)
     {
         if(!$user || !$application) {
             return false;
@@ -50,6 +51,7 @@ class AccessTokenService
         $accessToken->setToken($this->generateToken());
         $accessToken->setIsRevoked(false);
         $accessToken->setLastUseDate(null);
+        $accessToken->setScopes($scopes->getValues());
         $accessToken->setDateCreated(new DateTime());
 
         $this->getAccessTokenMapper()->save($accessToken);

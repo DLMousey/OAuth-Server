@@ -55,38 +55,16 @@
                 </div>
                 <div class="col-8 offset-2 d-flex flex-column justify-content-center mt-3">
                     <!-- @todo - replace with iteration over requested scopes -->
-                    <div class="row">
-                        <div class="col-6">
-                            <b>Personal Information</b>
+                    <?php foreach($this->scopes as $scope) : ?>
+                        <div class="row">
+                            <div class="col-6">
+                                <b><?= $scope->getName() ?></b>
+                            </div>
+                            <div class="col-6">
+                                <?= $scope->getDescription() ?>
+                            </div>
                         </div>
-                        <div class="col-6">
-                            Your email address and profile picture
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <b>Course Progress</b>
-                        </div>
-                        <div class="col-6">
-                            Your progression through courses & lessons
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <b>Discussions</b>
-                        </div>
-                        <div class="col-6">
-                            Threads & replies you've posted in discussions
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <b>Quizzes</b>
-                        </div>
-                        <div class="col-6">
-                            Quizzes you've completed & answers to questions
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
                 <hr>
                 <div class="col-12 d-flex justify-content-center">
@@ -97,7 +75,12 @@
                 </div>
                 <div class="col-12 d-flex justify-content-center mt-3">
                     <a href="<?= $this->url('oauth/consent-granted', [], [
-                            'query' => ['client_id' => $this->application->getClientId()]
+                            'query' => [
+                                'client_id' => $this->application->getClientId(),
+                                'scope' => implode(',', array_map(function($sco) {
+                                    return $sco->getKey();
+                                }, $this->scopes))
+                            ]
                         ]) ?>" class="btn btn-primary mr-3">Allow</a>
                     <a class="btn btn-danger ml-3">Deny</a>
                 </div>
