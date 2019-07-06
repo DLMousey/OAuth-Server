@@ -16,13 +16,13 @@ class User
     protected $dateOfBirth;
     protected $avatarPath;
     protected $verificationTokens;
-    protected $refreshTokens;
+    protected $accessTokens;
     protected $applications;
 
     public function __construct()
     {
         $this->verificationTokens = new ArrayCollection();
-        $this->refreshTokens = new ArrayCollection();
+        $this->accessTokens = new ArrayCollection();
         $this->applications = new ArrayCollection();
     }
 
@@ -215,44 +215,44 @@ class User
     }
 
     /**
-     * @param ArrayCollection $refreshTokens
+     * @param ArrayCollection $accessTokens
      * @return $this
      */
-    public function setRefreshTokens(ArrayCollection $refreshTokens)
+    public function setAccessTokens(ArrayCollection $accessTokens)
     {
-        $this->refreshTokens = $refreshTokens;
+        $this->refreshTokens = $accessTokens;
         return $this;
     }
 
     /**
      * @return ArrayCollection
      */
-    public function getRefreshTokens() : ArrayCollection
+    public function getAccessTokens() : ArrayCollection
     {
-        return $this->refreshTokens;
+        return $this->accessTokens;
     }
 
     /**
-     * @param AccessToken $refreshToken
+     * @param AccessToken $accessToken
      * @return $this
      */
-    public function addRefreshToken(RefreshToken $refreshToken)
+    public function addAccessToken(AccessToken $accessToken)
     {
-        if(!$this->refreshTokens->contains($refreshToken)) {
-            $this->refreshTokens->add($refreshToken);
+        if(!$this->accessTokens->contains($accessToken)) {
+            $this->accessTokens->add($accessToken);
         }
 
         return $this;
     }
 
     /**
-     * @param $refreshToken
+     * @param AccessToken $accessToken
      * @return $this
      */
-    public function removeRefreshToken(RefreshToken $refreshToken)
+    public function removeAccessToken(AccessToken $accessToken)
     {
-        if($this->refreshTokens->contains($refreshToken)) {
-            $this->refreshTokens->remove($refreshToken);
+        if($this->accessTokens->contains($accessToken)) {
+            $this->accessTokens->remove($accessToken);
         }
 
         return $this;

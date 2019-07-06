@@ -10,7 +10,7 @@
         <field name="avatarPath" column="avatar_path" type="string" nullable="true" />
         <field name="redirectUrl" column="redirect_url" type="string" nullable="true" />
         <field name="clientId" column="client_id" type="string" />
-        <field name="clientSecret" column="client_secret" type="clientsecret" />
+        <field name="clientSecret" column="client_secret" type="text" />
         <field name="dateCreated" column="date_created" type="datetime" />
         <field name="dateUpdated" column="date_updated" type="datetime" nullable="true" />
 

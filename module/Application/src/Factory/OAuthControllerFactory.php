@@ -16,6 +16,7 @@ class OAuthControllerFactory implements FactoryInterface
         $controller->setApplicationService($container->get('core_application_service'));
         $controller->setVerificationTokenService($container->get('core_verification_token_service'));
         $controller->setUserService($container->get('core_user_service'));
+        $controller->setAccessTokenService($container->get('core_access_token_service'));
 
         return $controller;
     }

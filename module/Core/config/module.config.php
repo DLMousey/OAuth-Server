@@ -27,13 +27,15 @@ return [
             'core_application_service' => Service\ApplicationService::class,
             'core_user_service' => Service\UserService::class,
             'core_authentication_manager' => Service\AuthenticationManager::class,
-            'core_verification_token_service' => Service\VerificationTokenService::class
+            'core_verification_token_service' => Service\VerificationTokenService::class,
+            'core_access_token_service' => Service\AccessTokenService::class
         ],
         'factories' => [
             Service\ApplicationService::class => Factory\ApplicationServiceFactory::class,
             Service\UserService::class => Factory\UserServiceFactory::class,
             Service\AuthenticationManager::class => Factory\AuthenticationManagerFactory::class,
             Service\VerificationTokenService::class => Factory\VerificationTokenServiceFactory::class,
+            Service\AccessTokenService::class => Factory\AccessTokenServiceFactory::class,
             AuthenticationService::class => Factory\AuthenticationServiceFactory::class,
             SessionManager::class => Factory\SessionManagerFactory::class
         ]

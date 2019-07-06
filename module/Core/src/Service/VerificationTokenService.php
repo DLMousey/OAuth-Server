@@ -20,7 +20,7 @@ class VerificationTokenService
      */
     public function findByToken(string $token)
     {
-        return $this->getVerificationTokenMapper()->findOneByCode($token);
+        return $this->getVerificationTokenMapper()->findOneByToken($token);
     }
 
     /**

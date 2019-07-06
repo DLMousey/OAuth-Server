@@ -114,9 +114,21 @@ return [
                         'type' => Literal::class,
                         'options' => [
                             'route' => '/granted',
+                            'verb' => 'get',
                             'defaults' => [
                                 'controller' => Controller\OAuthController::class,
                                 'action' => 'userConsentGrant'
+                            ]
+                        ]
+                    ],
+                    'consent-granted-callback' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/granted',
+                            'verb' => 'post',
+                            'defaults' => [
+                                'controller' => Controller\OAuthController::class,
+                                'action' => 'userConsentGrantCallback'
                             ]
                         ]
                     ]
@@ -169,9 +181,16 @@ return [
             OAuthController::class => [
                 [
                     'actions' => [
-                        'userConsent'
+                        'userConsent',
+                        'userConsentGrant',
                     ],
                     'allow' => '@'
+                ],
+                [
+                    'actions' => [
+                        'userConsentGrantCallback',
+                    ],
+                    'allow' => '*'
                 ]
             ]
         ]

@@ -4,12 +4,12 @@ namespace Core\Entity;
 
 use DateTime;
 
-class RefreshToken
+class AccessToken
 {
     protected $id;
     protected $token;
     protected $dateCreated;
-    protected $expiryDate;
+    protected $isRevoked;
     protected $lastUseDate;
     protected $user;
 
@@ -68,10 +68,28 @@ class RefreshToken
     }
 
     /**
+     * @param bool $isRevoked
+     * @return $this
+     */
+    public function setIsRevoked(bool $isRevoked = false)
+    {
+        $this->isRevoked = $isRevoked;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsRevoked() : bool
+    {
+        return $this->isRevoked;
+    }
+
+    /**
      * @param DateTime $lastUseDate
      * @return $this
      */
-    public function setLastUseDate(DateTime $lastUseDate)
+    public function setLastUseDate(DateTime $lastUseDate = null)
     {
         $this->lastUseDate = $lastUseDate;
         return $this;

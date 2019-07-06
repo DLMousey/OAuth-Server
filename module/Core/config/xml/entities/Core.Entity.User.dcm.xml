@@ -14,7 +14,7 @@
         <field name="avatarPath" column="avatar_path" type="string" nullable="true" />
 
         <one-to-many field="verificationTokens" target-entity="Core\Entity\VerificationToken" mapped-by="user" />
-        <one-to-many field="refreshTokens" target-entity="Core\Entity\RefreshToken" mapped-by="user" />
+        <one-to-many field="accessTokens" target-entity="Core\Entity\AccessToken" mapped-by="user" />
         <many-to-many field="applications" target-entity="Core\Entity\Application" inversed-by="users">
             <join-table name="applications_users">
                 <join-columns>
