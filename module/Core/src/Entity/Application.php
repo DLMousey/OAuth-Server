@@ -91,7 +91,7 @@ class Application
     /**
      * @return string
      */
-    public function getAvatarPath() : string
+    public function getAvatarPath()
     {
         return $this->avatarPath;
     }

@@ -2,6 +2,8 @@
 
 namespace Application\Form;
 
+use Zend\Form\Element\File;
+use Zend\Form\Element\Image;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
 use Zend\Form\Element\Textarea;
@@ -36,6 +38,18 @@ class ApplicationForm extends Form
             'attributes' => [
                 'class' => 'form-control',
                 'placeholder' => 'A description of my awesome app'
+            ]
+        ]);
+
+        $this->add([
+            'name' => 'avatar',
+            'type' => File::class,
+            'options' => [
+                'label' => 'Application Avatar'
+            ],
+            'attributes' => [
+                'step' => 00,
+                'class' => 'form-control'
             ]
         ]);
 

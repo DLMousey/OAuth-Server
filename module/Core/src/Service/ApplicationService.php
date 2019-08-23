@@ -55,6 +55,11 @@ class ApplicationService
         $application->setOwner($user);
         $application->setDateCreated(new DateTime());
 
+        $destination = '/uploads/avatars/applications/';
+        move_uploaded_file($_FILES['avatar']['tmp_name'], getcwd() . '/public' . $destination . $_FILES['avatar']['name']);
+
+        $application->setAvatarPath($destination . $_FILES['avatar']['name']);
+
         $this->getApplicationMapper()->persist($application);
         $this->getApplicationMapper()->flush();
 

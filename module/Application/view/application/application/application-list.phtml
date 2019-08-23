@@ -1,24 +1,32 @@
-<h2>Your Applications</h2>
+<h2 class="mt-2">Your Applications <a href="<?= $this->url('application-create') ?>" class="btn btn-success">Create new</a></h2>
 
 <div class="row">
     <?php foreach($this->applications as $application) : ?>
-        <div class="col-sm-12">
-            <div class="col-sm-1">
-                <img class="img-circle img-responsive" src="https://placehold.it/80/80" />
-            </div>
-            <div class="col-sm-10">
-                <div class="col-sm-12">
-                    <dl>
-                        <dt>Application Name</dt>
-                        <dd><?= $application->getName() ?></dd>
-                        <dt>Authorised Users</dt>
-                        <dd><?= $application->getUsers()->count() ?></dd>
-                    </dl>
+        <div class="col-sm-6 list-group-item">
+            <div class="row">
+                <div class="col-sm-6">
+                    <img class="img-circle img-fluid" src="<?= $application->getAvatarPath() ?>" />
                 </div>
-                <div class="col-sm-12">
-                    <a href="<?= $this->url('application-detail/edit', ['id' => 1]) ?>" class="btn btn-primary">Edit</a>
+                <div class="col-sm-6">
+                    <div class="col-sm-12">
+                        <dl>
+                            <dt>Application Name</dt>
+                            <dd><?= $application->getName() ?></dd>
+                            <dt>Authorised Users</dt>
+                            <dd><?= $application->getUsers()->count() ?></dd>
+                        </dl>
+                    </div>
+                    <div class="col-sm-12">
+                        <a href="<?= $this->url('application-detail/edit', ['id' => 1]) ?>" class="btn btn-primary">Edit</a>
+                    </div>
                 </div>
             </div>
         </div>
     <?php endforeach; ?>
+    <?php if(!count($this->applications)) : ?>
+        <div class="col-sm-12 list-group-item">
+            No applications linked to your account
+        </div>
+    <?php endif; ?>
+
 </div>

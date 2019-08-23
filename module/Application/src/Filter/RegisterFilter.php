@@ -2,6 +2,7 @@
 
 namespace Application\Filter;
 
+use Core\InputFilter\Datetime;
 use Zend\Filter\StringTrim;
 use Zend\Filter\StripTags;
 use Zend\InputFilter\InputFilter;
@@ -62,10 +63,7 @@ class RegisterFilter extends InputFilter
 
         $this->add([
             'name' => 'date_of_birth',
-            'required' => false,
-            'validators' => [
-                ['name' => Date::class]
-            ]
+            'required' => false
         ]);
     }
 }

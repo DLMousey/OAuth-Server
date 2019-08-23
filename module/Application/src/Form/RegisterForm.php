@@ -80,7 +80,8 @@ class RegisterForm extends Form
                 'label' => 'Date of birth'
             ],
             'attributes' => [
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'step' => '1'
             ]
         ]);
 

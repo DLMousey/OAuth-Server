@@ -6,6 +6,7 @@ use Core\Entity\Application;
 use Core\Entity\User;
 use Core\Entity\VerificationToken;
 use Core\Mapper\UserMapper;
+use DateTime;
 use Zend\Hydrator\ClassMethods;
 
 class UserService
@@ -38,6 +39,8 @@ class UserService
 
         if(empty($data['date_of_birth'])) {
             $data['date_of_birth'] = null;
+        } else {
+            $data['date_of_birth'] = new DateTime($data['date_of_birth']);
         }
 
         $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
